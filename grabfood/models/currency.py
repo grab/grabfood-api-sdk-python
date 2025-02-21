@@ -31,22 +31,22 @@ class Currency(BaseModel):
     """ # noqa: E501
     code: Annotated[str, Field(strict=True, max_length=3)] = Field(description="The three-letter ISO currency code. This is the currency that is associated with the payment amount. ")
     symbol: Annotated[str, Field(strict=True, max_length=3)] = Field(description="The currency symbol. ")
-    exponent: StrictInt = Field(description="The log base 10 of the number of times we have to multiply the major unit to get the minor unit. Should be 0 for VN and 2 for other countries (SG/MY/ID/TH/PH/KH). ")
+    exponent: StrictInt = Field(description="The log base 10 of the number of times we have to multiply the major unit to get the minor unit. Should be 0 for VN and 2 for other countries (`SG`/`MY`/`ID`/`TH`/`PH`/`KH`/`MM`). ")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["code", "symbol", "exponent"]
 
     @field_validator('code')
     def code_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['IDR', 'MYR', 'PHP', 'SGD', 'THB', 'VND']):
-            raise ValueError("must be one of enum values ('IDR', 'MYR', 'PHP', 'SGD', 'THB', 'VND')")
+        if value not in set(['IDR', 'MYR', 'PHP', 'SGD', 'THB', 'VND', 'KHR', 'MMK']):
+            raise ValueError("must be one of enum values ('IDR', 'MYR', 'PHP', 'SGD', 'THB', 'VND', 'KHR', 'MMK')")
         return value
 
     @field_validator('symbol')
     def symbol_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['Rp', 'RM', '₱', 'S$', '฿', '₫']):
-            raise ValueError("must be one of enum values ('Rp', 'RM', '₱', 'S$', '฿', '₫')")
+        if value not in set(['Rp', 'RM', '₱', 'S$', '฿', '₫', '៛', 'K']):
+            raise ValueError("must be one of enum values ('Rp', 'RM', '₱', 'S$', '฿', '₫', '៛', 'K')")
         return value
 
     model_config = ConfigDict(
