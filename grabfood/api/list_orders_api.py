@@ -19,6 +19,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import Field, StrictInt, StrictStr
+from typing import List, Optional
 from typing_extensions import Annotated
 from grabfood.models.list_orders_response import ListOrdersResponse
 
@@ -45,8 +46,9 @@ class ListOrdersApi:
         self,
         authorization: Annotated[StrictStr, Field(description="Specify the generated authorization token of the bearer type.")],
         merchant_id: Annotated[StrictStr, Field(description="The merchant's ID that is in GrabFood's database.")],
-        var_date: StrictStr,
-        page: Annotated[StrictInt, Field(description="Specify the page number for the report.")],
+        var_date: Optional[StrictStr] = None,
+        page: Annotated[Optional[StrictInt], Field(description="Specify the page number for the report. Required if orderIDs is not provided.")] = None,
+        order_ids: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=10)]], Field(description="List of order IDs. If provided, date and page are not required.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -67,10 +69,12 @@ class ListOrdersApi:
         :type authorization: str
         :param merchant_id: The merchant's ID that is in GrabFood's database. (required)
         :type merchant_id: str
-        :param var_date: (required)
+        :param var_date:
         :type var_date: str
-        :param page: Specify the page number for the report. (required)
+        :param page: Specify the page number for the report. Required if orderIDs is not provided.
         :type page: int
+        :param order_ids: List of order IDs. If provided, date and page are not required.
+        :type order_ids: List[str]
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -98,6 +102,7 @@ class ListOrdersApi:
             merchant_id=merchant_id,
             var_date=var_date,
             page=page,
+            order_ids=order_ids,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -123,8 +128,9 @@ class ListOrdersApi:
         self,
         authorization: Annotated[StrictStr, Field(description="Specify the generated authorization token of the bearer type.")],
         merchant_id: Annotated[StrictStr, Field(description="The merchant's ID that is in GrabFood's database.")],
-        var_date: StrictStr,
-        page: Annotated[StrictInt, Field(description="Specify the page number for the report.")],
+        var_date: Optional[StrictStr] = None,
+        page: Annotated[Optional[StrictInt], Field(description="Specify the page number for the report. Required if orderIDs is not provided.")] = None,
+        order_ids: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=10)]], Field(description="List of order IDs. If provided, date and page are not required.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -145,10 +151,12 @@ class ListOrdersApi:
         :type authorization: str
         :param merchant_id: The merchant's ID that is in GrabFood's database. (required)
         :type merchant_id: str
-        :param var_date: (required)
+        :param var_date:
         :type var_date: str
-        :param page: Specify the page number for the report. (required)
+        :param page: Specify the page number for the report. Required if orderIDs is not provided.
         :type page: int
+        :param order_ids: List of order IDs. If provided, date and page are not required.
+        :type order_ids: List[str]
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -176,6 +184,7 @@ class ListOrdersApi:
             merchant_id=merchant_id,
             var_date=var_date,
             page=page,
+            order_ids=order_ids,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -201,8 +210,9 @@ class ListOrdersApi:
         self,
         authorization: Annotated[StrictStr, Field(description="Specify the generated authorization token of the bearer type.")],
         merchant_id: Annotated[StrictStr, Field(description="The merchant's ID that is in GrabFood's database.")],
-        var_date: StrictStr,
-        page: Annotated[StrictInt, Field(description="Specify the page number for the report.")],
+        var_date: Optional[StrictStr] = None,
+        page: Annotated[Optional[StrictInt], Field(description="Specify the page number for the report. Required if orderIDs is not provided.")] = None,
+        order_ids: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=10)]], Field(description="List of order IDs. If provided, date and page are not required.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -223,10 +233,12 @@ class ListOrdersApi:
         :type authorization: str
         :param merchant_id: The merchant's ID that is in GrabFood's database. (required)
         :type merchant_id: str
-        :param var_date: (required)
+        :param var_date:
         :type var_date: str
-        :param page: Specify the page number for the report. (required)
+        :param page: Specify the page number for the report. Required if orderIDs is not provided.
         :type page: int
+        :param order_ids: List of order IDs. If provided, date and page are not required.
+        :type order_ids: List[str]
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -254,6 +266,7 @@ class ListOrdersApi:
             merchant_id=merchant_id,
             var_date=var_date,
             page=page,
+            order_ids=order_ids,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -276,6 +289,7 @@ class ListOrdersApi:
         merchant_id,
         var_date,
         page,
+        order_ids,
         _request_auth,
         _content_type,
         _headers,
@@ -285,6 +299,7 @@ class ListOrdersApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'orderIDs': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -307,6 +322,10 @@ class ListOrdersApi:
         if page is not None:
             
             _query_params.append(('page', page))
+            
+        if order_ids is not None:
+            
+            _query_params.append(('orderIDs', order_ids))
             
         # process the header parameters
         if authorization is not None:

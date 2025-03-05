@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **list_orders**
-> ListOrdersResponse list_orders(authorization, merchant_id, var_date, page)
+> ListOrdersResponse list_orders(authorization, merchant_id, var_date=var_date, page=page, order_ids=order_ids)
 
 List orders
 
@@ -34,12 +34,13 @@ with grabfood.ApiClient(configuration) as api_client:
     api_instance = grabfood.ListOrdersApi(api_client)
     authorization = 'Bearer <ACCESS_TOKEN_HERE>' # str | Specify the generated authorization token of the bearer type.
     merchant_id = '1-CYNGRUNGSBCCC' # str | The merchant's ID that is in GrabFood's database.
-    var_date = 'var_date_example' # str | 
-    page = 1 # int | Specify the page number for the report.
+    var_date = 'var_date_example' # str |  (optional)
+    page = 1 # int | Specify the page number for the report. Required if orderIDs is not provided. (optional)
+    order_ids = ['[\"123-CYNKLPCVRN5\",\"456-PCVRN5CYNKL\"]'] # List[str] | List of order IDs. If provided, date and page are not required. (optional)
 
     try:
         # List orders
-        api_response = api_instance.list_orders(authorization, merchant_id, var_date, page)
+        api_response = api_instance.list_orders(authorization, merchant_id, var_date=var_date, page=page, order_ids=order_ids)
         print("The response of ListOrdersApi->list_orders:\n")
         pprint(api_response)
     except Exception as e:
@@ -55,8 +56,9 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **str**| Specify the generated authorization token of the bearer type. | 
  **merchant_id** | **str**| The merchant&#39;s ID that is in GrabFood&#39;s database. | 
- **var_date** | **str**|  | 
- **page** | **int**| Specify the page number for the report. | 
+ **var_date** | **str**|  | [optional] 
+ **page** | **int**| Specify the page number for the report. Required if orderIDs is not provided. | [optional] 
+ **order_ids** | [**List[str]**](str.md)| List of order IDs. If provided, date and page are not required. | [optional] 
 
 ### Return type
 
