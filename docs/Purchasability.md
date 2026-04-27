@@ -6,13 +6,13 @@ Purchasability is set to true by default for all service type, unless it is expl
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**delivery_on_demand_grab_app** | **bool** |  | [optional] 
-**delivery_scheduled_grab_app** | **bool** |  | [optional] 
-**self_pick_up_on_demand_grab_app** | **bool** |  | [optional] 
-**dine_in_on_demand_grab_app** | **bool** |  | [optional] 
-**delivery_on_demand_store_front** | **bool** |  | [optional] 
-**delivery_scheduled_store_front** | **bool** |  | [optional] 
-**self_pick_up_on_demand_store_front** | **bool** |  | [optional] 
+**delivery_on_demand_grab_app** | **bool** | **Case-sensitive**.  | [optional] 
+**delivery_scheduled_grab_app** | **bool** | **Case-sensitive**.  | [optional] 
+**self_pick_up_on_demand_grab_app** | **bool** | **Case-sensitive**.  | [optional] 
+**dine_in_on_demand_grab_app** | **bool** | **Case-sensitive**.  | [optional] 
+**delivery_on_demand_store_front** | **bool** | **Case-sensitive**.  | [optional] 
+**delivery_scheduled_store_front** | **bool** | **Case-sensitive**.  | [optional] 
+**self_pick_up_on_demand_store_front** | **bool** | **Case-sensitive**. | [optional] 
 
 ## Example
 

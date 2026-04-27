@@ -21,6 +21,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from grabfood.models.order import Order
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -35,14 +36,15 @@ class OrderStateRequest(BaseModel):
     driver_eta: Optional[StrictInt] = Field(default=None, description="The driver's estimated of arrival (ETA) in seconds when the state is `DRIVER_ALLOCATED`.", alias="driverETA")
     code: Optional[StrictStr] = Field(default=None, description="The current order's sub-state. This is in free text so you should only use for reference. Grab may use this for troubleshooting. If you want some analysis, kindly use `state` instead.")
     message: Optional[StrictStr] = Field(default=None, description="Additional information to explain the current order state. May be system status or human entered message.")
+    order: Optional[Order] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["merchantID", "partnerMerchantID", "orderID", "state", "driverETA", "code", "message"]
+    __properties: ClassVar[List[str]] = ["merchantID", "partnerMerchantID", "orderID", "state", "driverETA", "code", "message", "order"]
 
     @field_validator('state')
     def state_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['ACCEPTED', 'DRIVER_ALLOCATED', 'DRIVER_ARRIVED', 'COLLECTED', 'DELIVERED', 'FAILED', 'CANCELLED']):
-            raise ValueError("must be one of enum values ('ACCEPTED', 'DRIVER_ALLOCATED', 'DRIVER_ARRIVED', 'COLLECTED', 'DELIVERED', 'FAILED', 'CANCELLED')")
+        if value not in set(['ACCEPTED', 'DRIVER_ALLOCATED', 'DRIVER_ARRIVED', 'COLLECTED', 'DELIVERED', 'BILL_PAID', 'COMPLETED', 'REFUNDED', 'FAILED', 'CANCELLED']):
+            raise ValueError("must be one of enum values ('ACCEPTED', 'DRIVER_ALLOCATED', 'DRIVER_ARRIVED', 'COLLECTED', 'DELIVERED', 'BILL_PAID', 'COMPLETED', 'REFUNDED', 'FAILED', 'CANCELLED')")
         return value
 
     model_config = ConfigDict(
@@ -86,6 +88,9 @@ class OrderStateRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of order
+        if self.order:
+            _dict['order'] = self.order.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -114,7 +119,8 @@ class OrderStateRequest(BaseModel):
             "state": obj.get("state"),
             "driverETA": obj.get("driverETA"),
             "code": obj.get("code"),
-            "message": obj.get("message")
+            "message": obj.get("message"),
+            "order": Order.from_dict(obj["order"]) if obj.get("order") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

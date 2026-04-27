@@ -1,6 +1,6 @@
 # Order
 
-A JSON object containing the order information. 
+A JSON object containing the order information. This is only applicable for STO order in Push Order State Webhook 
 
 ## Properties
 
@@ -27,6 +27,8 @@ Name | Type | Description | Notes
 **receiver** | [**Receiver**](Receiver.md) |  | [optional] 
 **order_ready_estimation** | [**OrderReadyEstimation**](OrderReadyEstimation.md) |  | [optional] 
 **membership_id** | **str** | Membership ID for loyalty project. Only present for loyalty program partners. Empty if not applicable. | [optional] 
+**discounts** | [**List[GrabDiscount1]**](GrabDiscount1.md) | The discounts that are applicable for the paybill order in dineout STO case. &#x60;null&#x60; when there is no discount applied. This is only applicable for STO order  | [optional] 
+**payments** | [**List[Payment]**](Payment.md) | An array of payment objects. &#x60;null&#x60; when there is no payment info from pos. This is only applicable for STO order | [optional] 
 
 ## Example
 

@@ -23,18 +23,20 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from grabfood.models.address import Address
+from grabfood.models.virtual_contact import VirtualContact
 from typing import Optional, Set
 from typing_extensions import Self
 
 class Receiver(BaseModel):
     """
-    A JSON object containing the receiver information. Only applicable for orders that are delivered by the restaurant. `null` if not applicable.
+    A JSON object containing the receiver information.
     """ # noqa: E501
     name: Optional[Annotated[str, Field(strict=True, max_length=64)]] = Field(default=None, description="The name of the receiver.")
-    phones: Optional[StrictStr] = Field(default=None, description="The receiver's phone number.")
+    phones: Optional[StrictStr] = Field(default=None, description="The receiver's phone number. Only applicable for orders that are delivered by the restaurant. `null` if not applicable.  > Note: The `phones` field will be deprecated once the virtualContact feature is fully rolled out. ")
     address: Optional[Address] = None
+    virtual_contact: Optional[VirtualContact] = Field(default=None, alias="virtualContact")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["name", "phones", "address"]
+    __properties: ClassVar[List[str]] = ["name", "phones", "address", "virtualContact"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -80,6 +82,9 @@ class Receiver(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of address
         if self.address:
             _dict['address'] = self.address.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of virtual_contact
+        if self.virtual_contact:
+            _dict['virtualContact'] = self.virtual_contact.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -99,7 +104,8 @@ class Receiver(BaseModel):
         _obj = cls.model_validate({
             "name": obj.get("name"),
             "phones": obj.get("phones"),
-            "address": Address.from_dict(obj["address"]) if obj.get("address") is not None else None
+            "address": Address.from_dict(obj["address"]) if obj.get("address") is not None else None,
+            "virtualContact": VirtualContact.from_dict(obj["virtualContact"]) if obj.get("virtualContact") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

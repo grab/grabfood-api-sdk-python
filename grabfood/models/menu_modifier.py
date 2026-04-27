@@ -33,7 +33,7 @@ class MenuModifier(BaseModel):
     id: Annotated[str, Field(strict=True, max_length=64)] = Field(description="The modifier's ID that is on the partner's system. This ID should be unique.")
     name: Annotated[str, Field(strict=True, max_length=40)] = Field(description="The name of the modifier.")
     name_translation: Optional[Dict[str, StrictStr]] = Field(default=None, description="Translation of the modifier name. Only support up to 1 translated language. Refer [Menu Translation](#section/Menu-Translation).", alias="nameTranslation")
-    available_status: StrictStr = Field(description="The status for the modifier. Refer to FAQs for more details about [availableStatus](#section/Menu/What-is-availableStatus).", alias="availableStatus")
+    available_status: StrictStr = Field(description="The status for the modifier. Refer to FAQs for more details about [availableStatus](#section/Menu/What-is-availableStatus).   Note: `HIDE` will only update the modifier to unavailable, remove the modifier from the menu if you want to hide it entirely. ", alias="availableStatus")
     price: Optional[StrictInt] = Field(default=None, description="The modifier's price in minor format. Refer to FAQs for more details about [tax](#section/Menu/Is-the-menu-price-with-or-without-tax).")
     barcode: Optional[Annotated[str, Field(strict=True, max_length=64)]] = Field(default=None, description="The barcode Number (GTIN). GTIN must be 8, 12, 13, 14 numeric digits.")
     sequence: Optional[StrictInt] = Field(default=None, description="The sort or display order of the modifier within the menu.")

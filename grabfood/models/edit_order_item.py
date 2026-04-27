@@ -21,6 +21,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from grabfood.models.edit_order_item_modifier import EditOrderItemModifier
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -32,8 +33,9 @@ class EditOrderItem(BaseModel):
     status: StrictStr = Field(description="The item's edited status. Leave empty string if there is no change to the item.")
     quantity: Optional[StrictInt] = Field(default=None, description="The item's quantity. If the item is not being updated or deleted, use the original quantity.")
     is_external_item_id: Optional[StrictBool] = Field(default=None, description="Only applicable for `ADDED`status. Indicate if the `itemID` is an external item ID. Grab checks for the items that are mapped to the provided item ID, considering their availability. If multiple Grab items are found to be mapped to the provided external item ID, the last updated item will be chosen. If no suitable record is found, an 400 error will be returned to the partner, indicating that the submitted external item ID cannot be edited.", alias="isExternalItemID")
+    modifiers: Optional[List[EditOrderItemModifier]] = Field(default=None, description="The modifiers of the item. Only required when you want to update the modifiers of the item. Refer [Edit Order](#section/Edit-Order) for more use cases.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["itemID", "status", "quantity", "isExternalItemID"]
+    __properties: ClassVar[List[str]] = ["itemID", "status", "quantity", "isExternalItemID", "modifiers"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -83,6 +85,13 @@ class EditOrderItem(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in modifiers (list)
+        _items = []
+        if self.modifiers:
+            for _item_modifiers in self.modifiers:
+                if _item_modifiers:
+                    _items.append(_item_modifiers.to_dict())
+            _dict['modifiers'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -103,7 +112,8 @@ class EditOrderItem(BaseModel):
             "itemID": obj.get("itemID"),
             "status": obj.get("status"),
             "quantity": obj.get("quantity"),
-            "isExternalItemID": obj.get("isExternalItemID")
+            "isExternalItemID": obj.get("isExternalItemID"),
+            "modifiers": [EditOrderItemModifier.from_dict(_item) for _item in obj["modifiers"]] if obj.get("modifiers") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

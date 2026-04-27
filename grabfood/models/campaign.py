@@ -35,7 +35,7 @@ class Campaign(BaseModel):
     id: StrictStr = Field(description="The campaign's ID.")
     created_by: StrictStr = Field(description="The party who created the campaign. Can be created by partners via API, merchants via the merchant app or Grab.", alias="createdBy")
     merchant_id: StrictStr = Field(description="The merchant's ID that is in GrabFood's database.", alias="merchantID")
-    name: StrictStr = Field(description="The campaign's name.")
+    name: Annotated[str, Field(strict=True, max_length=256)] = Field(description="The campaign's name.")
     quotas: Optional[CampaignQuotas] = None
     conditions: Optional[CampaignConditions] = None
     discount: Optional[CampaignDiscount] = None

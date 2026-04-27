@@ -33,7 +33,7 @@ class CreateCampaignRequest(BaseModel):
     This request creates a campaign for your GrabFood store. 
     """ # noqa: E501
     merchant_id: StrictStr = Field(description="The merchant's ID that is in GrabFood's database.", alias="merchantID")
-    name: StrictStr = Field(description="The campaign's name.")
+    name: Annotated[str, Field(strict=True, max_length=256)] = Field(description="The campaign's name.")
     quotas: Optional[CampaignQuotas] = None
     conditions: CampaignConditions
     discount: CampaignDiscount

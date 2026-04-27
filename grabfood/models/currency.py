@@ -45,8 +45,8 @@ class Currency(BaseModel):
     @field_validator('symbol')
     def symbol_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['Rp', 'RM', '₱', 'S$', '฿', '₫', '៛', 'K']):
-            raise ValueError("must be one of enum values ('Rp', 'RM', '₱', 'S$', '฿', '₫', '៛', 'K')")
+        if value not in set(['Rp', 'RM', '₱', 'S$', '฿', '₫', '៛', 'K', 'IDR', 'MYR', 'PHP', 'SGD', 'THB', 'VND', 'KHR', 'MMK']):
+            raise ValueError("must be one of enum values ('Rp', 'RM', '₱', 'S$', '฿', '₫', '៛', 'K', 'IDR', 'MYR', 'PHP', 'SGD', 'THB', 'VND', 'KHR', 'MMK')")
         return value
 
     model_config = ConfigDict(

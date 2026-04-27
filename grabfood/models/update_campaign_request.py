@@ -33,7 +33,7 @@ class UpdateCampaignRequest(BaseModel):
     This request updates a campaign for your GrabFood store. 
     """ # noqa: E501
     merchant_id: Optional[StrictStr] = Field(default=None, description="The merchant's ID that is in GrabFood's database.", alias="merchantID")
-    name: Optional[StrictStr] = Field(default=None, description="The campaign's name.")
+    name: Optional[Annotated[str, Field(strict=True, max_length=256)]] = Field(default=None, description="The campaign's name.")
     quotas: Optional[CampaignQuotas] = None
     conditions: Optional[CampaignConditions] = None
     discount: Optional[CampaignDiscount] = None
