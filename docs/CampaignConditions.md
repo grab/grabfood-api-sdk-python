@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **eater_type** | **str** | The type of eater eligible for the campaign.  * &#x60;all&#x60; - campaign will be applied to everyone. No limitation on campaign type. * &#x60;new&#x60; - campaign will be applied to consumers who have not ordered from this store in the last three months. Only applicable to **order-level** campaign.  | 
 **min_basket_amount** | **float** | The minimum basket amount to be eligible for the campaign. Only applicable to **order-level** campaign but not to item-level discount campaign. | [optional] 
 **bundle_quantity** | **int** | Specify the bundle quantity for bundle offer campaign. | [optional] 
-**working_hour** | [**WorkingHour**](WorkingHour.md) |  | [optional] 
+**working_hour** | [**WorkingHour**](WorkingHour.md) |  | 
 
 ## Example
 

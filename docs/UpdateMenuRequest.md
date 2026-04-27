@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **id** | **str** | The record&#39;s ID on the partner system. For example, the modifier id in case type is MODIFIER. | 
 **price** | **int** | The record&#39;s price in minor unit format. | [optional] 
 **available_status** | **str** | The record&#39;s availableStatus. | [optional] 
-**max_stock** | **int** | Available stocks under inventory for this item. Auto reduce when there is order placed for this item.  Note: It is necessary to set &#x60;maxStock&#x60; to 0 if the &#x60;availableStatus&#x60; of the item is \&quot;UNAVAILABLE\&quot;. Item will be set to \&quot;AVAILABLE\&quot; if &#x60;maxStock&#x60; &gt; 0.  | [optional] 
+**max_stock** | **int** | Available stocks under inventory for this item. Auto reduce when there is order placed for this item. The value **must not exceed** &#x60;9999999&#x60;.  Note: It is necessary to set &#x60;maxStock&#x60; to 0 if the &#x60;availableStatus&#x60; of the item is \&quot;UNAVAILABLE\&quot;. Item will be set to \&quot;AVAILABLE\&quot; if &#x60;maxStock&#x60; &gt; 0.  | [optional] 
 **advanced_pricings** | [**List[UpdateAdvancedPricing]**](UpdateAdvancedPricing.md) | Price configuration (in minor unit) for different service, order type and channel combination. If a service type does not have a specified price, it will utilize the default price of the item.  | [optional] 
 **purchasabilities** | [**List[UpdatePurchasability]**](UpdatePurchasability.md) | Purchasability is set to true by default for all service type, unless it is explicitly set to false. Modifier will reuse it’s item’s purchasability.  | [optional] 
 **name** | **str** | **Only required when updating modifiers.** The record&#39;s name. Used as identifier to locate the correct record. | 

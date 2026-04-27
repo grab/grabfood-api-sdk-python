@@ -19,7 +19,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -32,19 +32,9 @@ class OrderItemModifier(BaseModel):
     id: Optional[Annotated[str, Field(strict=True, max_length=64)]] = Field(default=None, description="The modifier's ID that is on the partner's system.")
     price: Optional[StrictInt] = Field(default=None, description="The modifier's price (tax-inclusive) in minor format.  ``` price = round(165 * (1 + 0.06)) = 175 ")
     tax: Optional[StrictInt] = Field(default=None, description="Tax in minor format for 1 modifier. Refer to FAQs for more details about [tax](#section/Order/How-is-tax-calculated). ``` tax = 165*0.06=10 ")
-    quantity: Optional[StrictInt] = Field(default=None, description="The number of modifiers present. The value is always 1.")
+    quantity: Optional[StrictInt] = Field(default=None, description="The number of modifiers present.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "price", "tax", "quantity"]
-
-    @field_validator('quantity')
-    def quantity_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set([1]):
-            raise ValueError("must be one of enum values (1)")
-        return value
 
     model_config = ConfigDict(
         populate_by_name=True,

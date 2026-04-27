@@ -28,13 +28,13 @@ class Purchasability(BaseModel):
     """
     Purchasability is set to true by default for all service type, unless it is explicitly set to false. Modifier will reuse it’s item’s purchasability. Refer [Service Based Menu](#section/Service-Based-Menu). 
     """ # noqa: E501
-    delivery_on_demand_grab_app: Optional[StrictBool] = Field(default=None, alias="Delivery_OnDemand_GrabApp")
-    delivery_scheduled_grab_app: Optional[StrictBool] = Field(default=None, alias="Delivery_Scheduled_GrabApp")
-    self_pick_up_on_demand_grab_app: Optional[StrictBool] = Field(default=None, alias="SelfPickUp_OnDemand_GrabApp")
-    dine_in_on_demand_grab_app: Optional[StrictBool] = Field(default=None, alias="DineIn_OnDemand_GrabApp")
-    delivery_on_demand_store_front: Optional[StrictBool] = Field(default=None, alias="Delivery_OnDemand_StoreFront")
-    delivery_scheduled_store_front: Optional[StrictBool] = Field(default=None, alias="Delivery_Scheduled_StoreFront")
-    self_pick_up_on_demand_store_front: Optional[StrictBool] = Field(default=None, alias="SelfPickUp_OnDemand_StoreFront")
+    delivery_on_demand_grab_app: Optional[StrictBool] = Field(default=None, description="**Case-sensitive**. ", alias="Delivery_OnDemand_GrabApp")
+    delivery_scheduled_grab_app: Optional[StrictBool] = Field(default=None, description="**Case-sensitive**. ", alias="Delivery_Scheduled_GrabApp")
+    self_pick_up_on_demand_grab_app: Optional[StrictBool] = Field(default=None, description="**Case-sensitive**. ", alias="SelfPickUp_OnDemand_GrabApp")
+    dine_in_on_demand_grab_app: Optional[StrictBool] = Field(default=None, description="**Case-sensitive**. ", alias="DineIn_OnDemand_GrabApp")
+    delivery_on_demand_store_front: Optional[StrictBool] = Field(default=None, description="**Case-sensitive**. ", alias="Delivery_OnDemand_StoreFront")
+    delivery_scheduled_store_front: Optional[StrictBool] = Field(default=None, description="**Case-sensitive**. ", alias="Delivery_Scheduled_StoreFront")
+    self_pick_up_on_demand_store_front: Optional[StrictBool] = Field(default=None, description="**Case-sensitive**.", alias="SelfPickUp_OnDemand_StoreFront")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["Delivery_OnDemand_GrabApp", "Delivery_Scheduled_GrabApp", "SelfPickUp_OnDemand_GrabApp", "DineIn_OnDemand_GrabApp", "Delivery_OnDemand_StoreFront", "Delivery_Scheduled_StoreFront", "SelfPickUp_OnDemand_StoreFront"]
 

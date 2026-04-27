@@ -35,7 +35,7 @@ class CampaignConditions(BaseModel):
     eater_type: StrictStr = Field(description="The type of eater eligible for the campaign.  * `all` - campaign will be applied to everyone. No limitation on campaign type. * `new` - campaign will be applied to consumers who have not ordered from this store in the last three months. Only applicable to **order-level** campaign. ", alias="eaterType")
     min_basket_amount: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The minimum basket amount to be eligible for the campaign. Only applicable to **order-level** campaign but not to item-level discount campaign.", alias="minBasketAmount")
     bundle_quantity: Optional[StrictInt] = Field(default=None, description="Specify the bundle quantity for bundle offer campaign.", alias="bundleQuantity")
-    working_hour: Optional[WorkingHour] = Field(default=None, alias="workingHour")
+    working_hour: WorkingHour = Field(alias="workingHour")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["startTime", "endTime", "eaterType", "minBasketAmount", "bundleQuantity", "workingHour"]
 

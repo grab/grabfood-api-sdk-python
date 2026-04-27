@@ -40,11 +40,11 @@ class MenuItem(BaseModel):
     description_translation: Optional[Dict[str, StrictStr]] = Field(default=None, description="Translation of the item description. Only support up to 1 translated language. Refer [Menu Translation](#section/Menu-Translation).", alias="descriptionTranslation")
     price: StrictInt = Field(description="The item's price in minor format. For example: 1900 means $19 with `currency.exponent` as 2. Refer to [FAQ](#section/Menu/Is-the-menu-price-with-or-without-tax) to determine whether the pricing should be tax-inclusive or tax-exclusive. ")
     photos: Optional[List[StrictStr]] = Field(default=None, description="An array string for the item’s image URL link. Only 1 image is supported. Refer to FAQs for more details about [images formats](#section/Menu/What-are-the-recommended-formats-for-an-item-image). ")
-    special_type: Optional[StrictStr] = Field(default=None, description="The item's special Tag. Refer to FAQs for more details about [specialType](#section/Menu/What's-specialType). ", alias="specialType")
+    special_type: Optional[StrictStr] = Field(default=None, description="The special tag of an item. For implementation details and behavior specific to each value, refer to: **Alcohol & Tobacco** [FAQ](#section/Menu/What-happens-when-an-item-is-tagged-with-specialType-alcohol-or-tobacco) and **Meal for One** [documentation](#section/Meal-for-One). ", alias="specialType")
     taxable: Optional[StrictBool] = Field(default=None, description="**For Indonesia only.** This field allows the configuration for an item to be marked as tax applicable, and marked item would then be included in a commercial invoice to consumers as per the government's regulations. ")
     barcode: Optional[Annotated[str, Field(strict=True, max_length=64)]] = Field(default=None, description="The barcode Number (GTIN). Max 64 allowed. GTIN must be 8, 12, 13, 14 numeric digits. ")
     selling_time_id: Optional[StrictStr] = Field(default=None, description="The selling time's ID for the item. This value overrides the category's selling time if it is different. Empty value implies the category's selling time will be applied. ", alias="sellingTimeID")
-    max_stock: Optional[StrictInt] = Field(default=None, description="Available stocks under inventory for this item. Auto reduce when there is order placed for this item. Empty value implies no limit.  > Note: It is necessary to set `maxStock` to 0 if the `availableStatus` of the item is `\"UNAVAILABLE\"`. Item will be set to `\"AVAILABLE\"` if `maxStock` > 0. ", alias="maxStock")
+    max_stock: Optional[StrictInt] = Field(default=None, description="Available stocks under inventory for this item. Auto reduce when there is order placed for this item. The value **must not exceed** `9999999`. Empty value implies no limit.  > Note: It is necessary to set `maxStock` to 0 if the `availableStatus` of the item is `\"UNAVAILABLE\"`. Item will be set to `\"AVAILABLE\"` if `maxStock` > 0. ", alias="maxStock")
     sequence: Optional[StrictInt] = Field(default=None, description="The sort or display order of the item within the menu.")
     advanced_pricing: Optional[AdvancedPricing] = Field(default=None, alias="advancedPricing")
     purchasability: Optional[Purchasability] = None
@@ -65,8 +65,8 @@ class MenuItem(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['alcohol', '']):
-            raise ValueError("must be one of enum values ('alcohol', '')")
+        if value not in set(['alcohol', 'tobacco', 'meal_for_one', '']):
+            raise ValueError("must be one of enum values ('alcohol', 'tobacco', 'meal_for_one', '')")
         return value
 
     model_config = ConfigDict(

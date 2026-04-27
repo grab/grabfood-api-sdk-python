@@ -24,19 +24,21 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_
 from typing import Any, ClassVar, Dict, List, Optional
 from grabfood.models.currency import Currency
 from grabfood.models.dine_in import DineIn
+from grabfood.models.grab_discount1 import GrabDiscount1
 from grabfood.models.order_campaign import OrderCampaign
 from grabfood.models.order_feature_flags import OrderFeatureFlags
 from grabfood.models.order_item import OrderItem
 from grabfood.models.order_price import OrderPrice
 from grabfood.models.order_promo import OrderPromo
 from grabfood.models.order_ready_estimation import OrderReadyEstimation
+from grabfood.models.payment import Payment
 from grabfood.models.receiver import Receiver
 from typing import Optional, Set
 from typing_extensions import Self
 
 class Order(BaseModel):
     """
-    A JSON object containing the order information. 
+    A JSON object containing the order information. This is only applicable for STO order in Push Order State Webhook 
     """ # noqa: E501
     order_id: StrictStr = Field(description="The order's ID that is returned from GrabFood. Refer to FAQs for more details about [orderID and shortOrderNumber](#section/Order/What's-the-difference-between-orderID-and-shortOrderNumber).", alias="orderID")
     short_order_number: StrictStr = Field(description="The GrabFood short order number. This is unique for each merchant per day. Refer to FAQs for more details about [orderID and shortOrderNumber](#section/Order/What's-the-difference-between-orderID-and-shortOrderNumber).", alias="shortOrderNumber")
@@ -59,8 +61,10 @@ class Order(BaseModel):
     receiver: Optional[Receiver] = None
     order_ready_estimation: Optional[OrderReadyEstimation] = Field(default=None, alias="orderReadyEstimation")
     membership_id: Optional[StrictStr] = Field(default=None, description="Membership ID for loyalty project. Only present for loyalty program partners. Empty if not applicable.", alias="membershipID")
+    discounts: Optional[List[Optional[GrabDiscount1]]] = Field(default=None, description="The discounts that are applicable for the paybill order in dineout STO case. `null` when there is no discount applied. This is only applicable for STO order ")
+    payments: Optional[List[Payment]] = Field(default=None, description="An array of payment objects. `null` when there is no payment info from pos. This is only applicable for STO order")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["orderID", "shortOrderNumber", "merchantID", "partnerMerchantID", "paymentType", "cutlery", "orderTime", "submitTime", "completeTime", "scheduledTime", "orderState", "currency", "featureFlags", "items", "campaigns", "promos", "price", "dineIn", "receiver", "orderReadyEstimation", "membershipID"]
+    __properties: ClassVar[List[str]] = ["orderID", "shortOrderNumber", "merchantID", "partnerMerchantID", "paymentType", "cutlery", "orderTime", "submitTime", "completeTime", "scheduledTime", "orderState", "currency", "featureFlags", "items", "campaigns", "promos", "price", "dineIn", "receiver", "orderReadyEstimation", "membershipID", "discounts", "payments"]
 
     @field_validator('payment_type')
     def payment_type_validate_enum(cls, value):
@@ -149,6 +153,20 @@ class Order(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of order_ready_estimation
         if self.order_ready_estimation:
             _dict['orderReadyEstimation'] = self.order_ready_estimation.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in discounts (list)
+        _items = []
+        if self.discounts:
+            for _item_discounts in self.discounts:
+                if _item_discounts:
+                    _items.append(_item_discounts.to_dict())
+            _dict['discounts'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in payments (list)
+        _items = []
+        if self.payments:
+            for _item_payments in self.payments:
+                if _item_payments:
+                    _items.append(_item_payments.to_dict())
+            _dict['payments'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -173,6 +191,21 @@ class Order(BaseModel):
         # and model_fields_set contains the field
         if self.receiver is None and "receiver" in self.model_fields_set:
             _dict['receiver'] = None
+
+        # set to None if order_ready_estimation (nullable) is None
+        # and model_fields_set contains the field
+        if self.order_ready_estimation is None and "order_ready_estimation" in self.model_fields_set:
+            _dict['orderReadyEstimation'] = None
+
+        # set to None if discounts (nullable) is None
+        # and model_fields_set contains the field
+        if self.discounts is None and "discounts" in self.model_fields_set:
+            _dict['discounts'] = None
+
+        # set to None if payments (nullable) is None
+        # and model_fields_set contains the field
+        if self.payments is None and "payments" in self.model_fields_set:
+            _dict['payments'] = None
 
         return _dict
 
@@ -206,7 +239,9 @@ class Order(BaseModel):
             "dineIn": DineIn.from_dict(obj["dineIn"]) if obj.get("dineIn") is not None else None,
             "receiver": Receiver.from_dict(obj["receiver"]) if obj.get("receiver") is not None else None,
             "orderReadyEstimation": OrderReadyEstimation.from_dict(obj["orderReadyEstimation"]) if obj.get("orderReadyEstimation") is not None else None,
-            "membershipID": obj.get("membershipID")
+            "membershipID": obj.get("membershipID"),
+            "discounts": [GrabDiscount1.from_dict(_item) for _item in obj["discounts"]] if obj.get("discounts") is not None else None,
+            "payments": [Payment.from_dict(_item) for _item in obj["payments"]] if obj.get("payments") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

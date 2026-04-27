@@ -28,13 +28,13 @@ class AdvancedPricing(BaseModel):
     """
     Price configuration (in minor unit) for different service, order type and channel combination. If a service type does not have a specified price, it will utilize the default price of the item. Refer [Service Based Menu](#section/Service-Based-Menu). 
     """ # noqa: E501
-    delivery_on_demand_grab_app: Optional[StrictInt] = Field(default=None, description="Service type: `Delivery`, Order type: `Instant`, Channel: `Grab App` ", alias="Delivery_OnDemand_GrabApp")
-    delivery_scheduled_grab_app: Optional[StrictInt] = Field(default=None, description="Service type: `Delivery`, Order type: `Scheduled`, Channel: `Grab App` ", alias="Delivery_Scheduled_GrabApp")
-    self_pick_up_on_demand_grab_app: Optional[StrictInt] = Field(default=None, description="Service type: `Self Pick Up`, Order type: `Instant`, Channel: `Grab App` ", alias="SelfPickUp_OnDemand_GrabApp")
-    dine_in_on_demand_grab_app: Optional[StrictInt] = Field(default=None, description="Service type: `Dine In`, Order type: `Instant`, Channel: `Grab App` ", alias="DineIn_OnDemand_GrabApp")
-    delivery_on_demand_store_front: Optional[StrictInt] = Field(default=None, description="Service type: `Delivery`, Order type: `Instant`, Channel: `Store Front` ", alias="Delivery_OnDemand_StoreFront")
-    delivery_scheduled_store_front: Optional[StrictInt] = Field(default=None, description="Service type: `Delivery`, Order type: `Scheduled`, Channel: `Store Front` ", alias="Delivery_Scheduled_StoreFront")
-    self_pick_up_on_demand_store_front: Optional[StrictInt] = Field(default=None, description="Service type: `Self Pick Up`, Order type: `Instant`, Channel: `Store Front` ", alias="SelfPickUp_OnDemand_StoreFront")
+    delivery_on_demand_grab_app: Optional[StrictInt] = Field(default=None, description="**Case-sensitive**. Service type: `Delivery`, Order type: `Instant`, Channel: `Grab App` ", alias="Delivery_OnDemand_GrabApp")
+    delivery_scheduled_grab_app: Optional[StrictInt] = Field(default=None, description="**Case-sensitive**. Service type: `Delivery`, Order type: `Scheduled`, Channel: `Grab App` ", alias="Delivery_Scheduled_GrabApp")
+    self_pick_up_on_demand_grab_app: Optional[StrictInt] = Field(default=None, description="**Case-sensitive**. Service type: `Self Pick Up`, Order type: `Instant`, Channel: `Grab App` ", alias="SelfPickUp_OnDemand_GrabApp")
+    dine_in_on_demand_grab_app: Optional[StrictInt] = Field(default=None, description="**Case-sensitive**. Service type: `Dine In`, Order type: `Instant`, Channel: `Grab App` ", alias="DineIn_OnDemand_GrabApp")
+    delivery_on_demand_store_front: Optional[StrictInt] = Field(default=None, description="**Case-sensitive**. Service type: `Delivery`, Order type: `Instant`, Channel: `Store Front` ", alias="Delivery_OnDemand_StoreFront")
+    delivery_scheduled_store_front: Optional[StrictInt] = Field(default=None, description="**Case-sensitive**. Service type: `Delivery`, Order type: `Scheduled`, Channel: `Store Front` ", alias="Delivery_Scheduled_StoreFront")
+    self_pick_up_on_demand_store_front: Optional[StrictInt] = Field(default=None, description="**Case-sensitive**. Service type: `Self Pick Up`, Order type: `Instant`, Channel: `Store Front` ", alias="SelfPickUp_OnDemand_StoreFront")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["Delivery_OnDemand_GrabApp", "Delivery_Scheduled_GrabApp", "SelfPickUp_OnDemand_GrabApp", "DineIn_OnDemand_GrabApp", "Delivery_OnDemand_StoreFront", "Delivery_Scheduled_StoreFront", "SelfPickUp_OnDemand_StoreFront"]
 

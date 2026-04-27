@@ -30,7 +30,7 @@ class OrderFeatureFlags(BaseModel):
     """ # noqa: E501
     order_accepted_type: StrictStr = Field(description="The acceptance type for the order. Refer to FAQs for more details about [orderAcceptedType](#section/Order/How-do-I-identify-if-a-particular-order-is-auto-or-manual-acceptance). ", alias="orderAcceptedType")
     order_type: StrictStr = Field(description="The type of order. ", alias="orderType")
-    is_mex_edit_order: Optional[StrictBool] = Field(default=None, description="A boolean value that indicates if the order is edited. ", alias="isMexEditOrder")
+    is_mex_edit_order: Optional[StrictBool] = Field(default=None, description="A boolean value that indicates if the order is edited or recalculated. It does not necessarily mean the order was edited by the merchant. The changes could have been made by Grab, the Merchant, or the Customer. ", alias="isMexEditOrder")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["orderAcceptedType", "orderType", "isMexEditOrder"]
 
@@ -44,8 +44,8 @@ class OrderFeatureFlags(BaseModel):
     @field_validator('order_type')
     def order_type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['TakeAway', 'DeliveredByGrab', 'DeliveredByRestaurant', 'DineIn']):
-            raise ValueError("must be one of enum values ('TakeAway', 'DeliveredByGrab', 'DeliveredByRestaurant', 'DineIn')")
+        if value not in set(['TakeAway', 'DeliveredByGrab', 'DeliveredByRestaurant', 'DineIn', 'ScanToOrder', 'TakeAwayOrder', 'PosDineOutOrder']):
+            raise ValueError("must be one of enum values ('TakeAway', 'DeliveredByGrab', 'DeliveredByRestaurant', 'DineIn', 'ScanToOrder', 'TakeAwayOrder', 'PosDineOutOrder')")
         return value
 
     model_config = ConfigDict(

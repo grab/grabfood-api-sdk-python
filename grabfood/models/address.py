@@ -27,7 +27,7 @@ from typing_extensions import Self
 
 class Address(BaseModel):
     """
-    A JSON object containing the receiver’s location information.
+    A JSON object containing the receiver’s location information. Only applicable for orders that are delivered by the restaurant. `null` if not applicable.
     """ # noqa: E501
     unit_number: Optional[StrictStr] = Field(default=None, description="The delivery address' unit number.", alias="unitNumber")
     delivery_instruction: Optional[StrictStr] = Field(default=None, description="Instructions for the delivery.", alias="deliveryInstruction")

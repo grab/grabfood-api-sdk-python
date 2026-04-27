@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **driver_eta** | **int** | The driver&#39;s estimated of arrival (ETA) in seconds when the state is &#x60;DRIVER_ALLOCATED&#x60;. | [optional] 
 **code** | **str** | The current order&#39;s sub-state. This is in free text so you should only use for reference. Grab may use this for troubleshooting. If you want some analysis, kindly use &#x60;state&#x60; instead. | [optional] 
 **message** | **str** | Additional information to explain the current order state. May be system status or human entered message. | [optional] 
+**order** | [**Order**](Order.md) |  | [optional] 
 
 ## Example
 

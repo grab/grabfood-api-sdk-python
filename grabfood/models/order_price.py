@@ -21,6 +21,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
+from grabfood.models.merchant_earning import MerchantEarning
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -30,15 +31,18 @@ class OrderPrice(BaseModel):
     """ # noqa: E501
     subtotal: StrictInt = Field(description="Total item and modifier price (tax-inclusive) in the minor unit. ``` subtotal = Sum of all (item price * quantity) | 2550*1=2550 ")
     tax: Optional[StrictInt] = Field(default=None, description="GrabFood's tax in the minor unit. Refer to FAQs for more details about [tax](#section/Order/How-is-tax-calculated). ``` tax = (subtotal + merchantChargeFee - merchantFundPromo) * Tax / (1+Tax) | (2550-475)*0.06/1.06=117 ")
-    merchant_charge_fee: Optional[StrictInt] = Field(default=None, description="Any additional fee charged by merchant (tax-inclusive), which is 100% paid out to the merchant. Eg. Takeaway, packaging costs, dine-in charge. ", alias="merchantChargeFee")
+    merchant_charge_fee: Optional[StrictInt] = Field(default=None, description="Any additional fee charged by merchant (tax-inclusive), which is 100% paid out to the merchant. Reach out to your integration support team for the configuration. Eg. Takeaway, packaging costs, dine-in charge. ", alias="merchantChargeFee")
+    service_charge_fee: Optional[StrictInt] = Field(default=None, description="Additional service charge fee charged by merchant (tax-inclusive), which is 100% paid out to the merchant. Reach out to your integration support team for the configuration. ", alias="serviceChargeFee")
     grab_fund_promo: Optional[StrictInt] = Field(default=None, description="GrabFood's promo fund in the minor unit. Calculated based on funded ratio. Only present when `paymentType:CASH` or `orderType:DeliveredByRestaurant`. Otherwise, it will be set to `0`.", alias="grabFundPromo")
     merchant_fund_promo: Optional[StrictInt] = Field(default=None, description="The merchant's promo fund in the minor unit. Calculated based on funded ratio.", alias="merchantFundPromo")
     basket_promo: Optional[StrictInt] = Field(default=None, description="The total amount promo applied to the basket items only (item level/order level) in the minor unit, excluding delivery fee. Only present when `paymentType: CASH` or `orderType: DeliveredByRestaurant`. Otherwise, it will be set to `0`.  ``` basketPromo = (grabFundPromo + merchantFundPromo) | 300 + 475 = 775 ", alias="basketPromo")
     delivery_fee: Optional[StrictInt] = Field(default=None, description="The delivery fee in the minor unit. Only present when `paymentType:CASH` or `orderType:DeliveredByRestaurant`. Otherwise, it will be set to `0`.", alias="deliveryFee")
     small_order_fee: Optional[StrictInt] = Field(default=None, description="The fee charged by GrabFood for order that does not meet a certain minimum order value. Only present when `paymentType:CASH` and `orderType:DeliveredByRestaurant`.", alias="smallOrderFee")
     eater_payment: Optional[StrictInt] = Field(default=None, description="The total amount paid by the consumer in the minor unit, excluding some additional fees charged by GrabFood. Only present when `paymentType:CASH` or `orderType:DeliveredByRestaurant`. Otherwise, it will be set to `0`.  ``` eaterPayment = (subtotal + merchantChargeFee + deliveryFee) - (sum of all promo) | (2550+400)-775=2175 ", alias="eaterPayment")
+    total: Optional[StrictInt] = Field(default=None, description="The total merchant-related amount calculated exclusive of commission charges. Formulae is the same for all delivery method.  ``` total = subtotal + merchantChargeFee - merchantFundPromo | 2550+0-475=2075 ")
+    merchant_earning: Optional[MerchantEarning] = Field(default=None, alias="merchantEarning")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["subtotal", "tax", "merchantChargeFee", "grabFundPromo", "merchantFundPromo", "basketPromo", "deliveryFee", "smallOrderFee", "eaterPayment"]
+    __properties: ClassVar[List[str]] = ["subtotal", "tax", "merchantChargeFee", "serviceChargeFee", "grabFundPromo", "merchantFundPromo", "basketPromo", "deliveryFee", "smallOrderFee", "eaterPayment", "total", "merchantEarning"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -81,10 +85,18 @@ class OrderPrice(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of merchant_earning
+        if self.merchant_earning:
+            _dict['merchantEarning'] = self.merchant_earning.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
+
+        # set to None if merchant_earning (nullable) is None
+        # and model_fields_set contains the field
+        if self.merchant_earning is None and "merchant_earning" in self.model_fields_set:
+            _dict['merchantEarning'] = None
 
         return _dict
 
@@ -101,12 +113,15 @@ class OrderPrice(BaseModel):
             "subtotal": obj.get("subtotal"),
             "tax": obj.get("tax"),
             "merchantChargeFee": obj.get("merchantChargeFee"),
+            "serviceChargeFee": obj.get("serviceChargeFee"),
             "grabFundPromo": obj.get("grabFundPromo"),
             "merchantFundPromo": obj.get("merchantFundPromo"),
             "basketPromo": obj.get("basketPromo"),
             "deliveryFee": obj.get("deliveryFee"),
             "smallOrderFee": obj.get("smallOrderFee"),
-            "eaterPayment": obj.get("eaterPayment")
+            "eaterPayment": obj.get("eaterPayment"),
+            "total": obj.get("total"),
+            "merchantEarning": MerchantEarning.from_dict(obj["merchantEarning"]) if obj.get("merchantEarning") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

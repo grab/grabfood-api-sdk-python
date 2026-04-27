@@ -30,8 +30,8 @@ class CampaignDiscount(BaseModel):
     The discount detail for a particular campaign when conditions are satisfied.
     """ # noqa: E501
     type: StrictStr = Field(description="The type of discount ")
-    cap: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The maximum discount dollar amount. It is **not required** and will be ignored when the `discount.type` is: - `net` - `delivery` - `freeItem` - `bundleSameNet` - `bundleSamePercentage` - `bundleSameFixPrice` - `bundleDiffNet` - `bundleDiffPercentage` - `bundleDiffFixPrice` ")
-    value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Specify the discount amount. Decimal number is not supported For VN, ID and TH. For example, `10.5` is not allowed and it should be `10.0`. * Dollar amount value when `discount.type` is `net`, `delivery`, `bundleSameNet`, `bundleSameFixPrice`, `bundleDiffNet`, `bundleDiffFixPrice`. * Percentage value (0-100) when `discount.type` is `percentage`, `bundleSamePercentage`, `bundleDiffPercentage`. * **Not required** when `discount.type` is `freeItem`. ")
+    cap: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The maximum discount dollar amount. It is **not required** and will be ignored when the `discount.type` is: - `net` - `fixPrice` - `delivery` - `freeItem` - `bundleSameNet` - `bundleSamePercentage` - `bundleSameFixPrice` - `bundleDiffNet` - `bundleDiffPercentage` - `bundleDiffFixPrice` ")
+    value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Specify the discount amount. Decimal number is not supported For VN, ID and TH. For example, `10.5` is not allowed and it should be `10.0`. * Dollar amount value when `discount.type` is `net`, `delivery`, `fixPrice`, `bundleSameNet`, `bundleSameFixPrice`, `bundleDiffNet`, `bundleDiffFixPrice`. * Percentage value (0-100) when `discount.type` is `percentage`, `bundleSamePercentage`, `bundleDiffPercentage`. * **Not required** when `discount.type` is `freeItem`. * The order-level discount given **should not exceed 0.5 * the minimum basket amount**. ")
     scope: CampaignScope
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["type", "cap", "value", "scope"]
@@ -39,8 +39,8 @@ class CampaignDiscount(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['net', 'percentage', 'delivery', 'freeItem', 'bundleSameNet', 'bundleSamePercentage', 'bundleSameFixPrice', 'bundleDiffNet', 'bundleDiffPercentage', 'bundleDiffFixPrice']):
-            raise ValueError("must be one of enum values ('net', 'percentage', 'delivery', 'freeItem', 'bundleSameNet', 'bundleSamePercentage', 'bundleSameFixPrice', 'bundleDiffNet', 'bundleDiffPercentage', 'bundleDiffFixPrice')")
+        if value not in set(['net', 'percentage', 'fixPrice', 'delivery', 'freeItem', 'bundleSameNet', 'bundleSamePercentage', 'bundleSameFixPrice', 'bundleDiffNet', 'bundleDiffPercentage', 'bundleDiffFixPrice']):
+            raise ValueError("must be one of enum values ('net', 'percentage', 'fixPrice', 'delivery', 'freeItem', 'bundleSameNet', 'bundleSamePercentage', 'bundleSameFixPrice', 'bundleDiffNet', 'bundleDiffPercentage', 'bundleDiffFixPrice')")
         return value
 
     model_config = ConfigDict(

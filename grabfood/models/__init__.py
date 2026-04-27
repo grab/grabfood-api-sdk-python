@@ -43,8 +43,11 @@ from grabfood.models.create_self_serve_journey_response import CreateSelfServeJo
 from grabfood.models.currency import Currency
 from grabfood.models.dine_in import DineIn
 from grabfood.models.edit_order_item import EditOrderItem
+from grabfood.models.edit_order_item_modifier import EditOrderItemModifier
 from grabfood.models.edit_order_request import EditOrderRequest
+from grabfood.models.edit_order_v2_response import EditOrderV2Response
 from grabfood.models.error import Error
+from grabfood.models.generate_stoqr_code_response import GenerateSTOQRCodeResponse
 from grabfood.models.get_dine_in_voucher_response import GetDineInVoucherResponse
 from grabfood.models.get_membership_native_response import GetMembershipNativeResponse
 from grabfood.models.get_membership_native_response_point_info import GetMembershipNativeResponsePointInfo
@@ -54,6 +57,7 @@ from grabfood.models.get_menu_new_response import GetMenuNewResponse
 from grabfood.models.get_menu_old_response import GetMenuOldResponse
 from grabfood.models.get_reward_native_request import GetRewardNativeRequest
 from grabfood.models.get_reward_native_response import GetRewardNativeResponse
+from grabfood.models.grab_discount1 import GrabDiscount1
 from grabfood.models.grab_oauth_request import GrabOauthRequest
 from grabfood.models.grab_oauth_response import GrabOauthResponse
 from grabfood.models.list_campaign_response import ListCampaignResponse
@@ -75,6 +79,7 @@ from grabfood.models.menu_sync_fail_modifier_group import MenuSyncFailModifierGr
 from grabfood.models.menu_sync_fail_service_hours import MenuSyncFailServiceHours
 from grabfood.models.menu_sync_response import MenuSyncResponse
 from grabfood.models.menu_sync_webhook_request import MenuSyncWebhookRequest
+from grabfood.models.merchant_earning import MerchantEarning
 from grabfood.models.modifier_group import ModifierGroup
 from grabfood.models.new_order_time_request import NewOrderTimeRequest
 from grabfood.models.notify_membership_webview_request import NotifyMembershipWebviewRequest
@@ -91,15 +96,21 @@ from grabfood.models.order_promo import OrderPromo
 from grabfood.models.order_ready_estimation import OrderReadyEstimation
 from grabfood.models.order_state_request import OrderStateRequest
 from grabfood.models.out_of_stock_instruction import OutOfStockInstruction
+from grabfood.models.pos_item import POSItem
 from grabfood.models.partner_oauth_request import PartnerOauthRequest
 from grabfood.models.partner_oauth_response import PartnerOauthResponse
 from grabfood.models.pause_store_request import PauseStoreRequest
+from grabfood.models.payment import Payment
+from grabfood.models.pos_item_modifier import PosItemModifier
+from grabfood.models.pos_order import PosOrder
+from grabfood.models.pos_price_details import PosPriceDetails
 from grabfood.models.purchasability import Purchasability
 from grabfood.models.push_integration_status_webhook_request import PushIntegrationStatusWebhookRequest
 from grabfood.models.receiver import Receiver
 from grabfood.models.redeem_dine_in_voucher_request import RedeemDineInVoucherRequest
 from grabfood.models.redeem_dine_in_voucher_response import RedeemDineInVoucherResponse
 from grabfood.models.redeem_result import RedeemResult
+from grabfood.models.refund_order_request import RefundOrderRequest
 from grabfood.models.register_membership_native_request import RegisterMembershipNativeRequest
 from grabfood.models.register_membership_native_response import RegisterMembershipNativeResponse
 from grabfood.models.reward_item import RewardItem
@@ -113,6 +124,8 @@ from grabfood.models.store_hour import StoreHour
 from grabfood.models.store_hour_response import StoreHourResponse
 from grabfood.models.store_status_response import StoreStatusResponse
 from grabfood.models.submit_order_request import SubmitOrderRequest
+from grabfood.models.sync_pos_order_request import SyncPOSOrderRequest
+from grabfood.models.sync_pos_order_response import SyncPOSOrderResponse
 from grabfood.models.unbind_membership_native_request import UnbindMembershipNativeRequest
 from grabfood.models.unlink_membership_webview_request import UnlinkMembershipWebviewRequest
 from grabfood.models.update_advanced_pricing import UpdateAdvancedPricing
@@ -128,6 +141,7 @@ from grabfood.models.update_menu_request import UpdateMenuRequest
 from grabfood.models.update_purchasability import UpdatePurchasability
 from grabfood.models.update_special_hour_request import UpdateSpecialHourRequest
 from grabfood.models.update_special_hour_response import UpdateSpecialHourResponse
+from grabfood.models.virtual_contact import VirtualContact
 from grabfood.models.voucher import Voucher
 from grabfood.models.voucher_description_info import VoucherDescriptionInfo
 from grabfood.models.working_hour import WorkingHour

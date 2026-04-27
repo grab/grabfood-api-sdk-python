@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **job_id** | **str** | An UUID string. Uniquely identifies a menu sync job. This can be found from the [Menu Update Notification](#tag/update-menu-noti) API response header.  | [optional] 
 **updated_at** | **str** | Indicates the time of menu sync status change. This is based on ISO_8601/RFC3339. For example: &#x60;2022-07-29T15:55:59Z&#x60;.  | [optional] 
 **status** | **str** | Indicates the state of the menu sync job. | [optional] 
-**errors** | **List[str]** | A string array of errors that occurred during processing. This array is empty if the status is not &#x60;FAILED&#x60;. | [optional] 
+**errors** | **List[str]** | A string array of errors that occurred during processing. | [optional] 
 
 ## Example
 

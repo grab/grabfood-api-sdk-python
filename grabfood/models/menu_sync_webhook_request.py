@@ -34,7 +34,7 @@ class MenuSyncWebhookRequest(BaseModel):
     job_id: Optional[StrictStr] = Field(default=None, description="An UUID string. Uniquely identifies a menu sync job. This can be found from the [Menu Update Notification](#tag/update-menu-noti) API response header. ", alias="jobID")
     updated_at: Optional[StrictStr] = Field(default=None, description="Indicates the time of menu sync status change. This is based on ISO_8601/RFC3339. For example: `2022-07-29T15:55:59Z`. ", alias="updatedAt")
     status: Optional[StrictStr] = Field(default=None, description="Indicates the state of the menu sync job.")
-    errors: Optional[List[StrictStr]] = Field(default=None, description="A string array of errors that occurred during processing. This array is empty if the status is not `FAILED`.")
+    errors: Optional[List[StrictStr]] = Field(default=None, description="A string array of errors that occurred during processing.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["requestID", "merchantID", "partnerMerchantID", "jobID", "updatedAt", "status", "errors"]
 

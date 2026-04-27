@@ -19,7 +19,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from grabfood.models.edit_order_item import EditOrderItem
 from typing import Optional, Set
@@ -32,8 +32,10 @@ class EditOrderRequest(BaseModel):
     order_id: StrictStr = Field(description="The order's ID that is returned from GrabFood. Refer to FAQs for more details about [orderID and shortOrderNumber](#section/Order/What's-the-difference-between-orderID-and-shortOrderNumber).", alias="orderID")
     items: List[EditOrderItem] = Field(description="Specify the array of all items in the order, including deleted, added, updated and unchanged items.")
     only_recalculate: Optional[StrictBool] = Field(default=None, description="This parameter specifies whether to recalculate the edited order without submitting it. It is intended for testing purposes only. This parameter is set to false by default, which means the edited order will be recalculated and re-submitted to partners. ", alias="onlyRecalculate")
+    deposit_amount_in_min: Optional[StrictInt] = Field(default=None, description="The deposit amount in minor unit in POS system. This is only applicable for STO order", alias="depositAmountInMin")
+    offline_pos_discount_in_min: Optional[StrictInt] = Field(default=None, description="The POS side discount amount in minor unit. This is only applicable for STO order", alias="offlinePOSDiscountInMin")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["orderID", "items", "onlyRecalculate"]
+    __properties: ClassVar[List[str]] = ["orderID", "items", "onlyRecalculate", "depositAmountInMin", "offlinePOSDiscountInMin"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -102,7 +104,9 @@ class EditOrderRequest(BaseModel):
         _obj = cls.model_validate({
             "orderID": obj.get("orderID"),
             "items": [EditOrderItem.from_dict(_item) for _item in obj["items"]] if obj.get("items") is not None else None,
-            "onlyRecalculate": obj.get("onlyRecalculate")
+            "onlyRecalculate": obj.get("onlyRecalculate"),
+            "depositAmountInMin": obj.get("depositAmountInMin"),
+            "offlinePOSDiscountInMin": obj.get("offlinePOSDiscountInMin")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
