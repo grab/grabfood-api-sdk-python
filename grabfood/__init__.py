@@ -16,7 +16,7 @@ API version: 1.1.3
 """
 
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 # import apis into sdk package
 from grabfood.api.accept_reject_order_api import AcceptRejectOrderApi
